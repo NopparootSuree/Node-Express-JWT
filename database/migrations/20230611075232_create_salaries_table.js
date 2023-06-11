@@ -4,7 +4,7 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('salaries', function(table) {
-        table.integer('emp_no', 10).notNullable().references('emp_no').inTable('employees').onDelete('CASCADE').index();
+        table.integer('emp_no').unsigned().notNullable().references('emp_no').inTable('employees').onDelete('CASCADE').index();
         table.integer('salary', 11).notNullable();
         table.date('from_date').notNullable();
         table.date('to_date');
