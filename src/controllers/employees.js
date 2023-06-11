@@ -29,12 +29,6 @@ const createEmployees = (req, res) => {
 
 	const { birth_date, first_name, last_name, gender, hire_date } = req.body
 
-    console.log(`birth_date ${typeof(birth_date)}`);
-    console.log(`first_name ${typeof(first_name)}`);
-    console.log(`last_name ${typeof(last_name)}`);
-    console.log(`gender ${typeof(gender)}`);
-    console.log(`hire_date ${typeof(hire_date)}`);
-
 	db('employees')
 		.insert({ birth_date, first_name, last_name, gender, hire_date })
 		.then(() => {
