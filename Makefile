@@ -10,6 +10,4 @@ migrateup:
 migratedown:
 	npx knex --knexfile knexfile.js migrate:down
 
-
-
 .PHONY: start migrate migrateup migratedown
