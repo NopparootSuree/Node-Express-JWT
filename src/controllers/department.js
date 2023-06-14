@@ -12,9 +12,8 @@ const createDepartment = (req, res) => {
     try {
 	    const { dept_no, dept_name } = req.body
 
-        const isMatch_DeptNo = regex("Int,BigAZ", dept_no)
-        const isMatch_DeptName = regex("SmallAZ,BigAZ", dept_name)
-
+        const isMatch_DeptNo = regex("dept_no", dept_no)
+        const isMatch_DeptName = regex("dept_name", dept_name)
         
         if(isMatch_DeptNo != true || isMatch_DeptName != true) {
             throw new Error("Cannot enter spacial symbol or dept_no cannot small character")
@@ -81,7 +80,7 @@ const updateDepartment = async (req, res) => {
     try {
         const { dept_name } = req.body
     
-        const isMatch_DeptName = regex("SmallAZ,BigAZ", dept_name)
+        const isMatch_DeptName = regex("dept_name", dept_name)
     
         if(isMatch_DeptName != true) {
             throw new Error("Cannot enter spacial symbol or dept_no cannot small character")

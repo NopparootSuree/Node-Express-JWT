@@ -24,7 +24,7 @@ const createEmployees = (req, res) => {
 
 const listEmployee = (req, res) => {
     db('employees')
-        .select("emp_no", "first_name", "last_name", "gender")
+        .select("*")
         .then((data) => {
             res.status(200).json({ result: data});
         })
