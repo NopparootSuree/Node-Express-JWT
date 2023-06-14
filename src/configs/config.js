@@ -26,7 +26,7 @@ const regex = (options, input) => {
     return null
 }
 
-async function comparePasswords(password, hashedPassword) {
+const comparePasswords = async (password, hashedPassword) => {
   try {
     const isMatch = await bcrypt.compare(password, hashedPassword);
     return isMatch;
