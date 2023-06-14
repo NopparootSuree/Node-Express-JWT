@@ -1,42 +1,95 @@
-const { body, validationResult } = require('express-validator');
-require('dotenv').config()
+const { validationResult } = require('express-validator');
 const db = require('../config/database')
-
-// Middleware สำหรับ validate request body
-const validateEmployees = [
-    body('birth_date').isDate().withMessage("Invalid date format"),
-    body('birth_date').notEmpty().withMessage('birth_date is required'),
-
-    body('first_name').isString().withMessage("Invalid string format"),
-    body('first_name').notEmpty().withMessage('first_name is required'),
-    
-    body('last_name').isString().withMessage("Invalid string format"),
-    body('last_name').notEmpty().withMessage('last_name is required'),
-
-    body('gender').isString().withMessage("Invalid string format"),
-    body('gender').isIn(['male', 'female']).withMessage("Please enter only Male or Female"),
-    body('gender').notEmpty().withMessage('gender is required'),
-    
-    body('hire_date').isDate().withMessage("Invalid date format"),
-    body('hire_date').notEmpty().withMessage('birth_date is required'),
-  ];
 
 const createEmployees = (req, res) => {
 	const errors = validationResult(req)
-	if(!errors.isEmpty){
+
+	if(!errors.isEmpty()){
 		return res.status(500).json({ errors: errors.array() })
 	}
-
+    
 	const { birth_date, first_name, last_name, gender, hire_date } = req.body
 
 	db('employees')
 		.insert({ birth_date, first_name, last_name, gender, hire_date })
-		.then(() => {
+        //ถ้าสำเร็จ
+        .then(() => {
 			res.status(200).json({ message: 'Employee created successfully' });
 		})
+        //ถ้าไม่สำเร็จ
 		.catch((error) => {
 			res.status(500).json({ message: 'Failed to create employee', error });
 		})
 }
 
-module.exports = { validateEmployees, createEmployees };
+const listEmployee = (req, res) => {
+    db('employees')
+        .select("emp_no", "first_name", "last_name", "gender")
+        .then((data) => {
+            res.status(200).json({ result: data});
+        })
+        .catch((err) => {
+            res.status(500).json({ message: 'Failed to Get list employee', err });
+        })
+}
+
+const deleteEmployee = async (req, res) => {
+    let { emp_no }= req.params
+    try {
+        const empExists = await db('employees').where('emp_no', emp_no).first();
+        
+        if (!empExists) {
+            throw new Error('Employee does not exists');
+        } 
+
+        db('employees')
+            .where('emp_no', emp_no)
+            .del()
+            .then(() => {
+                res.status(200).json({ message: 'Employee deleted successfully' });
+            })
+            .catch((error) => {
+                res.status(500).json({ message: 'Failed to delete employee', error });
+            })
+
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
+const updateEmployee = async (req, res) => {
+    let { emp_no }= req.params
+    const errors = validationResult(req)
+
+	if(!errors.isEmpty()){
+		return res.status(500).json({ errors: errors.array() })
+	}
+
+    const { first_name, last_name } = req.body
+
+    try {
+        const empExists = await db('employees').where('emp_no', emp_no).first();
+        
+        if (!empExists) {
+            throw new Error('Employee does not exists');
+        } 
+
+        db('employees')
+            .where('emp_no', emp_no)
+            .update({
+                first_name: first_name,
+                last_name: last_name
+            })
+            .then(() => {
+                res.status(200).json({ message: 'Employee updated successfully' });
+            })
+            .catch((error) => {
+                res.status(500).json({ message: 'Failed to update employee', error });
+            })
+
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
+
+module.exports = { createEmployees, listEmployee, deleteEmployee, updateEmployee };
