@@ -22,9 +22,9 @@ const validateCreateEmployees = [
     body('hire_date')
         .isDate().withMessage("Invalid date format")
         .notEmpty().withMessage('birth_date is required'),
-  ];
+];
 
-  const validateUpdateEmployees = [
+const validateUpdateEmployees = [
     body('first_name')
         .isString().withMessage("Invalid string format")
         .notEmpty().withMessage('first_name is required'),
@@ -32,6 +32,6 @@ const validateCreateEmployees = [
     body('last_name')
         .isString().withMessage("Invalid string format")
         .notEmpty().withMessage('last_name is required'),
-  ];
+];
 
 module.exports = { validateCreateEmployees, validateUpdateEmployees}

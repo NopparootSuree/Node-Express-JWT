@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const employee = require('../controllers/employees')
-const middleware = require('../middlewares/employee') 
+const controllers = require('../controllers/employees')
+const middlewares = require('../middlewares/employee') 
 
-router.post('/employee', middleware.validateCreateEmployees, employee.createEmployees)
-router.get('/employee', employee.listEmployee)
-router.delete('/employee/:emp_no', employee.deleteEmployee)
-router.put('/employee/:emp_no', middleware.validateUpdateEmployees, employee.updateEmployee)
+router.post('/controllers', middlewares.validateCreateEmployees, controllers.createEmployees)
+router.get('/controllers', controllers.listEmployee)
+router.delete('/controllers/:emp_no', controllers.deleteEmployee)
+router.put('/controllers/:emp_no', middlewares.validateUpdateEmployees, controllers.updateEmployee)
 
 module.exports = router;

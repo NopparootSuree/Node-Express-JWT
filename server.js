@@ -12,8 +12,10 @@ app.use(morgan('dev'))
 
 
 const employeeRoute = require('./src/routers/employee')
+const departmentRoute = require('./src/routers/department')
 
 app.use('/api', employeeRoute)
+app.use('/api', departmentRoute)
 
 const port = 3000
 app.listen(port, () => console.log(`Start Server Port: ${port}`));

@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const db = require('../config/database')
+const db = require('../configs/database')
 
 const createEmployees = (req, res) => {
 	const errors = validationResult(req)
@@ -81,7 +81,7 @@ const updateEmployee = async (req, res) => {
                 last_name: last_name
             })
             .then(() => {
-                res.status(200).json({ message: 'Employee updated successfully' });
+                res.status(201).json({ message: 'Employee updated successfully' });
             })
             .catch((error) => {
                 res.status(500).json({ message: 'Failed to update employee', error });
