@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const db = require('../configs/database');
-const { regex, comparePasswords, generateToken } = require('../configs/config')
+const { regex, comparePasswords, generateToken, setTimes } = require('../configs/config')
 const bcrypt = require('bcryptjs')
 const { format } = require('date-fns');
 require('dotenv').config();
@@ -74,22 +74,23 @@ const login = async (req, res) => {
   
     // สร้าง secretKey
     const secretKey = process.env.JWT_SECRET_KEY;
+
+    let expiredIn =  setTimes(5, "h")
   
     // ปรับแต่ง claims
     const claims = {
       username: user.username,
-      algorithm: 'HS256', // อัลกอริทึมในการเข้ารหัส JWT
-      expiresIn: '3h', // ระยะเวลาหมดอายุของ JWT
+      algorithm: 'HS256',
     };
-  
+
     // สร้าง Token
-    const token = generateToken(claims, secretKey, '3h');
+    const token = generateToken(claims, secretKey, expiredIn.stingTime);
   
     const payload = {
       token,
       username: user.username,
       issuedAt: new Date(),
-      expiredAt: new Date(Date.now() + 3 * 60 * 60 * 1000), // หมดอายุใน 3 ชั่วโมง
+      expiredAt: expiredIn.times,
     };
   
     res.status(200).json({ payload });

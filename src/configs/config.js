@@ -39,4 +39,24 @@ const generateToken = (payload, secretKey, expiresIn) => {
   return jwt.sign(payload, secretKey, { expiresIn });
 }
 
-module.exports = { regex, comparePasswords, generateToken }
+const setTimes = (number, unit) => {
+  if (unit == "m"){
+    let times = new Date(Date.now() + number * 60 * 1000)
+    let stingTime = `${number}m`
+    return { times, stingTime }
+
+  } else if (unit == "h") {
+    let times = new Date(Date.now() + number * 60 * 60 * 1000)
+    let stingTime = `${number}m`
+    return { times, stingTime }
+
+  } else if (unit == "d") {
+    let times = new Date(Date.now() + number * 24 * 60 * 60 * 1000)
+    let stingTime = `${number}m`
+    return { times, stingTime }
+
+  }
+  return null, null
+}
+
+module.exports = { regex, comparePasswords, generateToken, setTimes }

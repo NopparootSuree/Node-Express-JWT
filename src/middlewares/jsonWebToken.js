@@ -23,7 +23,5 @@ function JWTMiddleware(secretKey) {
     }
   };
 }
-
-module.exports = JWTMiddleware;
   
-  module.exports = JWTMiddleware;
+module.exports = JWTMiddleware;
